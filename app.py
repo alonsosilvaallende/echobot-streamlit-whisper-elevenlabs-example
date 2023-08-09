@@ -9,7 +9,6 @@ from elevenlabs import voices, generate, save, set_api_key, stream
 #from dotenv import load_dotenv, find_dotenv
 #load_dotenv(find_dotenv())
 #######
-import openai
 
 # Download whisper.cpp
 w = Whisper('tiny')
