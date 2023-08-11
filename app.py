@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 import base64
 from tempfile import NamedTemporaryFile
