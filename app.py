@@ -9,6 +9,7 @@ from elevenlabs import voices, generate, save, set_api_key, stream
 #from dotenv import load_dotenv, find_dotenv
 #load_dotenv(find_dotenv())
 #######
+set_api_key(os.getenv("ELEVENLABS_API_KEY"))
 
 # Download whisper.cpp
 w = Whisper('tiny')
@@ -40,6 +41,13 @@ def autoplay_audio(file_path: str):
 with st.sidebar:
     audio = audiorecorder("Click to send voice message", "Recording... Click when you're done", key="recorder")
     st.title("Echo Bot with Whisper")
+    voice_name = st.selectbox(
+    'Voice',
+    ('Rachel', 'Adam', 'Dorothy', 'Daniel'))
+    language = st.radio(
+    "Language",
+    ('English', 'Other'))
+
 
 # Initialize chat history
 if "messages" not in st.session_state:
@@ -66,7 +74,8 @@ if (prompt := st.chat_input("Your message")) or len(audio):
     # Display assistant response in chat message container
     with st.chat_message("assistant"):
         st.markdown(response)
-        audio = generate(text=f"{response}", voice="Rachel", model="eleven_monolingual_v1")
+        model_name="eleven_monolingual_v1" if language == "English" else "eleven_multilingual_v1"
+        audio = generate(text=f"{response}", voice=voice_name, model=model_name)
         with NamedTemporaryFile(suffix=".mp3") as temp:
             tempname = temp.name
             save(audio, tempname)
